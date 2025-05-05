@@ -4,17 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projet: Site Internet</title>
-    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://unpkg.com/modern-normalize@3.0.1/modern-normalize.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css">
 </head>
 <body>
-    <h1>
-        Projet: Site Internet de Lycée Polyvalent Jean Jaurès
-    </h1>
-    <p>
-        sdlfjskdjfksdfsf
-        skdjflsdkfj
-        skljflsdfjsd
-        skdfsdlfj
-    </p>
+    <header>
+        <hgroup>
+            <h1><img width="60px" src="{{ url_for('static', filename='ljj.jpg') }}" alt="">Projet: Site Internet</h1>
+            <p>
+                <i>par la classe 1CIEL au Lycée Polyvalent Jean Jaurès</i>
+            </p>
+        </hgroup>
+    </header>
+    <main>
+        <div>
+            <h2>Introduction a l'établissement</h2>
+            <p>
+                Le lycée Jean Jaurès à Argenteuil est un établissement public polyvalent. Il propose des formations générales, technologiques (STI2D), professionnelles (CAP, Bac pro MELEC, CIEL) et supérieures (BTS, prépas scientifiques). Il dispose aussi d'un internat et affiche environ 81 % de réussite au bac.
+            </p>
+        </div>
+        <div>
+            <h2>Introduction a la classe CIEL</h2>
+            <p>La classe de CIEL (Cybersécurité, Informatique et réseaux, Électronique) est un BAC en 3 ans BTS en 2 ans. Elle forme des techniciens capables de sécuriser des réseaux, coder, gérer des systèmes électroniques. Accessible après un bac STI2D, général ou pro, elle mène à des métiers comme technicien réseau ou développeur, ou à des études supérieures.</p>
+        </div>
+        <div>
+            <h2>Createurs du site</h2>
+            <p>
+                Ce site a été créée par:
+            </p>
+            <ul>
+                <li>
+                    <strong><a href="/krissh">Krissh Sivaparan</a></strong>: Programmer, Designer
+                </li>
+                <li>
+                    <strong><a href="/velat">Velat Aksu</a></strong>: Ecrivain, Support emotionelle
+                </li>
+            </ul>
+        </div>
+        <div>
+            <h2>Commentaires:</h2>
+            <ul style="background-color: #161f27; padding: 20px; border-radius: 7px; list-style-type: none;">
+                {% for comment in comments %}
+                    <li><strong>{{ comment.username }}:</strong> {{ comment.content }}</li>
+                {% endfor %}
+            </ul>
+            <form method="POST">
+                <input type="text" name="username" placeholder="Prénom" required>
+                <textarea name="content" placeholder="Commentaire" required></textarea>
+                <button type="submit">Commentez</button>
+            </form>
+        </div>
+    </main>
 </body>
 </html>

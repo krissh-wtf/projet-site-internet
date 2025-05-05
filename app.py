@@ -1,35 +1,39 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import DeclarativeBase
-
-class Base(DeclarativeBase):
-  pass
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///eleves.db"
-db = SQLAlchemy(model_class=Base)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///comments.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+db = SQLAlchemy(app)
 
-@app.route("/")
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), nullable=False)  
+    content = db.Column(db.String(200), nullable=False)
+
+with app.app_context():
+    db.create_all()
+
+@app.route("/", methods=["GET", "POST"])
 def index():
-    return render_template("index.html")
+    if request.method == "POST":
+        username = request.form["username"]  
+        comment_content = request.form["content"]
+        new_comment = Comment(username=username, content=comment_content)
+        db.session.add(new_comment)
+        db.session.commit()
+        return redirect(url_for("index"))
 
-@app.route("/eleves", methods=["GET", "POST"])
-def eleves():
-    if request.method == "GET":
-        return render_template("eleves.html")
-    elif request.method == "POST":
-        prenom = request.form["prenom"]
-        classe = request.form["classe"]
+    comments = Comment.query.all()
+    return render_template("index.html", comments=comments)
 
-@app.route("/eleves/<prenom>", methods=["GET", "DELETE", "POST"])
-def eleve(prenom):
-    if request.method == "GET":
-        return render_template(f"eleves/{prenom}/index.html")
-    elif request.method == "DELETE":
-        pass
-    elif request.method == "POST":
-        pass
+@app.route("/krissh")
+def krissh():
+    return render_template("krissh.html")
 
-if __name__ == '__main__':
-    db.init_app(app)
+@app.route("/velat")
+def velat():
+    return render_template("velat.html")
+
+if __name__ == "__main__":
     app.run(debug=True)
