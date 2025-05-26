@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+token=$(cat .env)
+cloudflared tunnel run --token "$token"

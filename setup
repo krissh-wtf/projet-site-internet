@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+apk add cloudflared python3 uv
+uv add flask gunicorn flask_sqlalchemy
